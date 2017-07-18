@@ -90,5 +90,18 @@ export:
             vars["export:Fria2:Orm:ConnectionString"].ShouldBe("My dev connection string");
             vars["export:Fria2:EmailModule:SmtpServer"].ShouldBe("sendgrid.com");
         }
+
+        [Fact]
+        public void it_handles_inject_operator_at_top_level()
+        {
+            var vars = new YamlConfigVariables(@"
+R: &R
+  A: B
+
+<<: *R
+");
+
+            vars["A"].ShouldBe("B");
+        }
     }
 }
