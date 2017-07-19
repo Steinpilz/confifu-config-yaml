@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00_Solution Items", "00_Solution Items", "{DCEB84B3-D785-4B9C-8B65-40268730024B}"
 	ProjectSection(SolutionItems) = preProject
@@ -9,18 +9,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00_Solution Items", "00_Sol
 		.gitlab-ci.yml = .gitlab-ci.yml
 		build.bat = build.bat
 		scripts\build.fsx = scripts\build.fsx
+		src\common.props = src\common.props
 		paket.dependencies = paket.dependencies
 		README.md = README.md
-		src\common.props = src\common.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10_Test", "10_Test", "{10039984-8A0C-4FEB-A152-DFBDBA9ECC6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confifu.Config.Yaml", "src\app\Confifu.Config.Yaml\Confifu.Config.Yaml.csproj", "{41907D2F-9088-4880-81D9-6B9CA0BDBDE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confifu.Config.Yaml", "src\app\Confifu.Config.Yaml\Confifu.Config.Yaml.csproj", "{41907D2F-9088-4880-81D9-6B9CA0BDBDE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confifu.Config.Yaml.Tests", "src\test\Confifu.Config.Yaml.Tests\Confifu.Config.Yaml.Tests.csproj", "{3D4FECC8-BA68-47D3-BD1C-C5420B428105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confifu.Config.Yaml.Tests", "src\test\Confifu.Config.Yaml.Tests\Confifu.Config.Yaml.Tests.csproj", "{3D4FECC8-BA68-47D3-BD1C-C5420B428105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confifu.Config.Yaml.ConsoleHost", "src\host\Confifu.Config.Yaml.ConsoleHost\Confifu.Config.Yaml.ConsoleHost.csproj", "{8798FCFC-5AD2-4309-82EE-D32AD5A55DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confifu.Config.Yaml.ConsoleHost", "src\host\Confifu.Config.Yaml.ConsoleHost\Confifu.Config.Yaml.ConsoleHost.csproj", "{8798FCFC-5AD2-4309-82EE-D32AD5A55DF6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05_Host", "05_Host", "{085E0969-C842-49B9-B3ED-E76A8B70A56A}"
 EndProject
