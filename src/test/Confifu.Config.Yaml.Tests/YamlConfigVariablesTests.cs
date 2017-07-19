@@ -173,6 +173,32 @@ fail:
         }
 
         [Fact]
+        public void it_handles_parallelogram_correctly()
+        {
+            var vars = new YamlConfigVariables(@"
+A:
+  <<1: *B
+  <<2: *C
+
+B: &B
+  R: 3
+  <<: *D
+
+C: &C
+  R: 2
+  <<: *D
+
+D: &D
+  R: 1
+");
+
+            vars["D:R"].ShouldBe("1");
+            vars["C:R"].ShouldBe("2");
+            vars["B:R"].ShouldBe("3");
+            vars["A:R"].ShouldBe("2");
+        }
+
+        [Fact]
         public void it_throws_on_self_reference()
         {
             // Loop detected: 'R'
