@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Confifu.Config.Yaml.Graph
@@ -38,8 +39,8 @@ namespace Confifu.Config.Yaml.Graph
                 var mapping = (MappingNode) otherMappingsKvp.Value;
 
                 var cfgToInsert = cfgs[mapping];
-                var modifiedCfg = cfgToInsert.Select(kvp => new KeyValuePair<string, string>(PathBuilder.BuildSuffixPath(mapping, kvp.Key), kvp.Value));
-                Insert(modifiedCfg, nodeConfig);
+                var modifiedCfgToInsert = cfgToInsert.Select(kvp => new KeyValuePair<string, string>(PathBuilder.BuildSuffixPath(mapping, kvp.Key), kvp.Value));
+                Insert(modifiedCfgToInsert, nodeConfig);
             }
 
             // then go though scalars
@@ -56,12 +57,15 @@ namespace Confifu.Config.Yaml.Graph
 
         public static Dictionary<string, string> Build(Node root)
         {
+            if (root == null) throw new ArgumentNullException(nameof(root));
+
             var cfgs = new Dictionary<Node, Dictionary<string, string>>();
             var mappings = GraphTopSort.Sort(root).OfType<MappingNode>();
             foreach (var mapping in mappings)
             {
                 HandleMapping(mapping, cfgs);
             }
+
             return cfgs[root];
         }
     }

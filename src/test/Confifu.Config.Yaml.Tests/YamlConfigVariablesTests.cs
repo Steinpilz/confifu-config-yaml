@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Confifu.Config.Yaml.Graph;
 using Shouldly;
 using Xunit;
 

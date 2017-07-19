@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Confifu.Config.Yaml.Graph
 {
-    internal static class LoopChecker
+    internal static class LoopFinder
     {
         private static List<Node> FindLoop(Node node, IDictionary<Node, NodeState> states)
         {
@@ -54,7 +54,7 @@ namespace Confifu.Config.Yaml.Graph
         }
 
 
-        public static IEnumerable<Node> Check(Node node)
+        public static IEnumerable<Node> Find(Node node)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Confifu.Config.Yaml
+namespace Confifu.Config.Yaml.Graph
 {
     public sealed class ReferenceLoopException : Exception
     {

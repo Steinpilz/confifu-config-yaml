@@ -11,11 +11,11 @@ namespace Confifu.Config.Yaml.Graph
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
             var root = GraphExtractor.Extract(obj);
-            var loop = LoopChecker.Check(root);
+            var loop = LoopFinder.Find(root);
             if (loop == null) return GraphConfigBuilder.Build(root);
 
             var pathResolver = new PathResolver();
-            var loopStr = string.Join(", ", loop.Select(x => $"'{pathResolver.GetPath(x)}'"));
+            var loopStr = string.Join(", ", loop.Select(v => $"'{pathResolver.GetPath(v)}'"));
             throw new ReferenceLoopException($"Loop detected: {loopStr}");
         }
     }

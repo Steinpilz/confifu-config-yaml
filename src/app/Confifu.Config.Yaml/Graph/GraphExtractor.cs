@@ -23,7 +23,7 @@ namespace Confifu.Config.Yaml.Graph
 
             var children = new Dictionary<string, Node>();
             var merges = new List<MappingNode>();
-            var mergesKvps = new Dictionary<string, MappingNode>();
+            var mergesKvps = new List<KeyValuePair<string, MappingNode>>();
             var result = new MappingNode(children, merges);
             nodes.Add(obj, result);
 
@@ -33,13 +33,13 @@ namespace Confifu.Config.Yaml.Graph
                 if (key == null) throw new InvalidOperationException("Scalar Mapping key is supported only.");
 
                 var isMerge = IsMerge(key);
-                var name = isMerge ? null : key; // if ref, can not extract name
+                var name = isMerge ? null : key; // if key is merge op, can not extract name
 
                 var node = ExtractNode(kvp.Value, result, name, nodes);
                 var mapping = node as MappingNode;
                 if (isMerge && mapping == null) throw new InvalidOperationException("Merging operator should be used with Mappings only.");
 
-                if (isMerge) mergesKvps.Add(key, mapping);
+                if (isMerge) mergesKvps.Add(new KeyValuePair<string, MappingNode>(key, mapping));
                 else children.Add(key, node);
             }
 
