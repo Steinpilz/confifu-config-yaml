@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace Confifu.Config.Yaml.Graph
@@ -7,55 +6,61 @@ namespace Confifu.Config.Yaml.Graph
     // traverse nodes in top sort order, make config for each (because of top sort dependencies are resolved), use it for merging dependent nodes
     internal static class GraphConfigBuilder
     {
-        private static void HandleMerge(MappingNode node, IDictionary<Node, ImmutableDictionary<string, string>> cfgs)
+        private static void Insert(IEnumerable<KeyValuePair<string, string>> source, IDictionary<string, string> destination)
         {
-            var nodeConfig = ImmutableDictionary<string, string>.Empty;
+            foreach (var kvp in source)
+            {
+                destination[kvp.Key] = kvp.Value;
+            }
+        }
+
+        private static void HandleMapping(MappingNode node, IDictionary<Node, Dictionary<string, string>> cfgs)
+        {
+            var nodeConfig = new Dictionary<string, string>();
             var children = node.Children;
             
 
-            // go through all merge dependencies and pour them
-            var pourMappings = node.Merges;
+            // go through all merge dependencies and insert them
+            var insertMappings = node.Merges;
 
-            foreach (var mapping in pourMappings)
+            foreach (var mapping in insertMappings)
             {
-                var cfgToPour = cfgs[mapping];
-                nodeConfig = nodeConfig.SetItems(cfgToPour);
+                var cfgToInsert = cfgs[mapping];
+                Insert(cfgToInsert, nodeConfig);
             }
 
 
-            // then go through remainder dependencies and rewrite nodeConfig
+            // then go through remainder dependencies
             var otherMappings = children.Where(x => x.Value is MappingNode);
 
             foreach (var otherMappingsKvp in otherMappings)
             {
                 var mapping = (MappingNode) otherMappingsKvp.Value;
 
-                var cfgToPour = cfgs[mapping];
-                var modifiedCfg = cfgToPour.Select(kvp => new KeyValuePair<string, string>(PathBuilder.GetSuffixPath(mapping, kvp.Key), kvp.Value));
-                nodeConfig = nodeConfig.SetItems(modifiedCfg);
+                var cfgToInsert = cfgs[mapping];
+                var modifiedCfg = cfgToInsert.Select(kvp => new KeyValuePair<string, string>(PathBuilder.BuildSuffixPath(mapping, kvp.Key), kvp.Value));
+                Insert(modifiedCfg, nodeConfig);
             }
 
             // then go though scalars
-            var cfg = new Dictionary<string, string>();
             var scalarsKvps = children.Where(x => x.Value is ScalarNode);
             foreach (var scalarKvp in scalarsKvps)
             {
                 var scalar = (ScalarNode) scalarKvp.Value;
-                cfg.Add(scalarKvp.Key, scalar.Value);
+                nodeConfig[scalarKvp.Key] = scalar.Value;
             }
-            nodeConfig = nodeConfig.SetItems(cfg);
 
             cfgs.Add(node, nodeConfig);
         }
 
 
-        public static ImmutableDictionary<string, string> Build(Node root)
+        public static Dictionary<string, string> Build(Node root)
         {
-            var cfgs = new Dictionary<Node, ImmutableDictionary<string, string>>();
+            var cfgs = new Dictionary<Node, Dictionary<string, string>>();
             var mappings = GraphTopSort.Sort(root).OfType<MappingNode>();
             foreach (var mapping in mappings)
             {
-                HandleMerge(mapping, cfgs);
+                HandleMapping(mapping, cfgs);
             }
             return cfgs[root];
         }

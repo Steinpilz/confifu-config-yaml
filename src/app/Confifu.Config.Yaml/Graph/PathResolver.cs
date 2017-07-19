@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Confifu.Config.Yaml.Graph
 {
@@ -9,11 +8,11 @@ namespace Confifu.Config.Yaml.Graph
 
         public string GetPath(Node node)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (node == null) return null;
 
             if (_pathes.TryGetValue(node, out string path)) return path;
-            var parent = node.Parent;
-            path = parent == null ? PathBuilder.GetPrefixPath(node) : PathBuilder.GetPrefixPath(GetPath(parent), node);
+            var parentPath = GetPath(node.Parent);
+            path = PathBuilder.BuildPrefixPath(parentPath, node);
             return _pathes[node] = path;
         }
     }

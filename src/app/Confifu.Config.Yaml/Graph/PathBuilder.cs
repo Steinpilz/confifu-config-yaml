@@ -6,28 +6,21 @@ namespace Confifu.Config.Yaml.Graph
     {
         private const char Separator = ':';
 
-        public static string GetSuffixPath(MappingNode node, string forwardPath)
+        public static string BuildSuffixPath(MappingNode node, string suffixPath)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
-            if (forwardPath == null) throw new ArgumentNullException(nameof(forwardPath));
+            if (suffixPath == null) throw new ArgumentNullException(nameof(suffixPath));
 
-            return node.Parent == null ? forwardPath : node.Name + Separator + forwardPath;
+            return node.Parent == null ? suffixPath : node.Name + Separator + suffixPath;
         }
 
-        public static string GetPrefixPath(Node node)
+        public static string BuildPrefixPath(string prefixPath, Node node)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
+            if (node.Parent != null && prefixPath == null) throw new ArgumentException("prefixPath should not be null if node.Parent is not null", nameof(prefixPath));
 
-            return node.Parent == null ? string.Empty : GetPrefixPath(string.Empty, node);
-        }
-
-        public static string GetPrefixPath(string parentPath, Node node)
-        {
-            if (parentPath == null) throw new ArgumentNullException(nameof(parentPath));
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            if (node.Parent == null) throw new ArgumentException("Node should have parent.");
-
-            return string.IsNullOrEmpty(parentPath) ? node.Name : parentPath + Separator + node.Name;
+            if (node.Parent == null) return string.Empty;
+            return string.IsNullOrEmpty(prefixPath) ? node.Name : prefixPath + Separator + node.Name;
         }
     }
 }

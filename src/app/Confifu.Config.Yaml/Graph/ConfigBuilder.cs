@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Confifu.Config.Yaml.Graph
 {
     internal static class ConfigBuilder
     {
-        public static ImmutableDictionary<string, string> Build(object obj)
+        public static Dictionary<string, string> Build(object obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
 
