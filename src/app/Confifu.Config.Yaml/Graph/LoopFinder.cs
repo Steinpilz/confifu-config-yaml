@@ -12,18 +12,19 @@ namespace Confifu.Config.Yaml.Graph
 
             states[node] = NodeState.Visiting;
 
-            foreach (var child in mapping.Children.Values)
+            var dependencies = mapping.Children.Values.Concat(mapping.Merges);
+            foreach (var dependency in dependencies)
             {
-                var isChildHasState = states.TryGetValue(child, out NodeState childState);
+                var isChildHasState = states.TryGetValue(dependency, out NodeState childState);
                 if (isChildHasState)
                 {
-                    if (childState == NodeState.Visiting) return CreateLoop(node, child);
+                    if (childState == NodeState.Visiting) return CreateLoop(node, dependency);
 
                     continue; // don't visit Visited node
                 }
 
-                var loop = FindLoop(child, states);
-                return loop == null ? null : AddNodeToLoop(loop, node);
+                var loop = FindLoop(dependency, states);
+                if (loop != null) return AddNodeToLoop(loop, node);
             }
 
             states[node] = NodeState.Visited;

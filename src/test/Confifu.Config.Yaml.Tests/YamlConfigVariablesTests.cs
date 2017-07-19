@@ -199,6 +199,32 @@ D: &D
         }
 
         [Fact]
+        public void it_handles_parallelogram_with_bridge_correctly()
+        {
+            var vars = new YamlConfigVariables(@"
+A:
+  <<1: *B
+  <<2: *C
+
+B: &B
+  <<1: *C
+  <<2: *D
+
+C: &C
+  R: 2
+  <<2: *D
+
+D: &D
+  R: 1
+");
+
+            vars["D:R"].ShouldBe("1");
+            vars["C:R"].ShouldBe("2");
+            vars["B:R"].ShouldBe("1");
+            vars["A:R"].ShouldBe("2");
+        }
+
+        [Fact]
         public void it_throws_on_self_reference()
         {
             // Loop detected: 'R'
@@ -211,7 +237,7 @@ R: &R
         }
 
         [Fact]
-        public void it_throws_on_loops()
+        public void it_throws_on_loops_1()
         {
             // Loop detected: 'A', 'A:B', 'A:B:C', 'A'
             Assert.Throws<ReferenceLoopException>(() =>
@@ -222,6 +248,31 @@ A: &A
       S: *A
 ")
             );
+        }
+
+        [Fact]
+        public void it_throws_on_loops_2()
+        {
+            // Loop detected: 'B', 'C', 'B'
+            Assert.Throws<ReferenceLoopException>(() =>
+                new YamlConfigVariables(@"
+A:
+  <<1: *B
+  <<2: *C
+
+B: &B
+  <<1: *D
+  <<2: *C
+
+C: &C
+  <<1: *B
+  <<2: *D
+
+D: &D
+  R: 1
+")
+            );
+
         }
 
         [Fact]
