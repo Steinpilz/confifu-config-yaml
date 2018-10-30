@@ -27,6 +27,6 @@ namespace Confifu.Config.Yaml
             return new Dictionary<string, string>(ConfigBuilder.Build(obj));
         }
 
-        public string this[string key] => _dict.TryGetValue(key, out string result) ? result : null;
+        public string this[string key] => _dict.TryGetValue(key, out var result) ? result : null;
     }
 }

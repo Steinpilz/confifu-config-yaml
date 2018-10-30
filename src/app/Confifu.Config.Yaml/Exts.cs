@@ -8,8 +8,7 @@ namespace Confifu.Config.Yaml
         public static ConfigVariablesBuilder Yaml(
             this ConfigVariablesBuilder builder,
             Action<YamlConfigVariablesBuilder> configAction
-        )
-        {
+        ) {
             var yamlBuilder = new YamlConfigVariablesBuilder();
 
             configAction?.Invoke(yamlBuilder);
@@ -18,18 +17,15 @@ namespace Confifu.Config.Yaml
             return builder;
         }
 
-        public static ConfigVariablesBuilder Yaml(this ConfigVariablesBuilder builder,
-            string yamlContent)
-        {
+        public static ConfigVariablesBuilder Yaml(
+            this ConfigVariablesBuilder builder,
+            string yamlContent
+        ) => builder.Yaml(b => b.UseYamlContent(yamlContent));
 
-            return builder.Yaml(b => b.UseYamlContent(yamlContent));
-        }
-
-        public static ConfigVariablesBuilder YamlFile(this ConfigVariablesBuilder builder,
-            string filePath, bool optional = false)
-        {
-
-            return builder.Yaml(b => b.UseFile(filePath, optional));
-        }
+        public static ConfigVariablesBuilder YamlFile(
+            this ConfigVariablesBuilder builder,
+            string filePath,
+            bool optional = false
+        ) => builder.Yaml(b => b.UseFile(filePath, optional));
     }
 }

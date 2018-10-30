@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\common.props" />
+  <Import Project="../../common.props" />
+
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Confifu.Config.Yaml</Description>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Confifu.Abstractions" Version="2.1.2" />
-    <PackageReference Include="YamlDotNet" Version="4.2.1" />
+    <PackageReference Include="YamlDotNet" Version="5.2.1" />
   </ItemGroup>
 
 </Project>

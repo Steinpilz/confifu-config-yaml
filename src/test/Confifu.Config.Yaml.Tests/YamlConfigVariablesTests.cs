@@ -18,7 +18,7 @@ namespace Confifu.Config.Yaml.Tests
         [Fact]
         public void it_returns_null_for_not_existing_keys()
         {
-            var vars = new YamlConfigVariables(@"A: B");
+            var vars = new YamlConfigVariables("A: B");
             vars["B"].ShouldBeNull();
         }
 
@@ -147,7 +147,7 @@ RR: &RR
         }
 
         [Fact]
-        public void it_handles_test_that_do_not_pass_library_used_for_deserializing()
+        public void it_passes_test_that_is_not_passed_by_the_library_used_for_deserialization()
         {
             // https://github.com/aaubry/YamlDotNet/issues/259
             var vars = new YamlConfigVariables(@"
